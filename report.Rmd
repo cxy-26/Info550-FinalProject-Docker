@@ -1,0 +1,92 @@
+---
+title: "Project Data Set"
+author: "Xinyue Chen"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    df_print: paged
+    number_sections: yes
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+```
+
+```{r}
+here::i_am("report.Rmd")
+
+```
+
+
+# Introduction of NACC  
+NACC is the abbreviation of National Alzheimer’s Coordinating Center. It's a data set I can access to for my RA's project. All the information about this data set was copied from the *NACC Uniform Data Set -- Researchers Data Dictionary.* The data were collected from various Alzheimer's Disease Research Centers across the United States. A total of 34542 participants were recruited to participate in this cohort study.
+
+## Load data set
+```{r}
+data <- read.csv(here::here("data/NACC_AF_Data_Long.csv"))
+```
+
+This data set has `r nrow(data)` variables which include demographic variables such as ID, age, sex and race and also research related variables. And there's `r length(unique(data$NACCID))` participants in this data set. They contribute `r nrow(data)` entries for the NACC data set.  
+  
+My project focuses on the correlation between Atrial Fibrillation (AF) and cognitive status. AF is an irregular, often rapid, abnormal heart rhythm that decreases cardiac output by 25-33% and currently affects over 6 million people in the U.S. AF occurs in 10% of adults over 70 years of age and 20% of patients over 80. It is believed that once AF is detected, the condition never goes away. AF has been shown to be an independent risk factor for serious consequences of stroke, heart failure, and may contribute to decline in cognition function over time, leading to mild cognitive impairment (MCI) and dementia.  
+
+# Descriptive analysis
+
+## Summary of Baseline Data 
+
+### Demographics and Clinical Characteristics 
+```{r tab1}
+readRDS(
+  here::here("output/table1.rds")
+)
+```
+
+
+## Cognition Function Over Time
+
+### MMSE and MoCA scores 
+
+The figures below show the overall trend of MMSE and MoCA scores over time among those with 4 or more visits in the NACC database. The regression line was added using locally weighted regression (lowess) to “smooth” over all the variability to estimate the overall trend. 
+
+```{r MMSE}
+knitr::include_graphics(
+  here::here("output/plot1.png")
+)
+```
+
+```{r}
+knitr::include_graphics(
+  here::here("output/plot2.png")
+)
+```
+
+### Cognition Stages 
+
+We want to explore the percentages of subjects transitioned from one stage to another during the study follow-up and from which stage to which stage. We will first compare cognition stages at baseline and the last follow-up visit (N=29788).  
+
+```{r}
+library(knitr)
+library(dplyr)
+readRDS(here::here("output/first.last.stage.table.rds")) %>% 
+  kable(booktabs = T,centering = T,align = "l")
+```
+
+
+Among subjects with AF:  
+
+```{r}
+readRDS(here::here("output/first.last.stage.table.af.rds"))%>% 
+  kable(booktabs = T,centering = T,align = "l")
+
+```
+
+Among subjects without AF:  
+
+```{r}
+readRDS(here::here("output/first.last.stage.table.noaf.rds"))%>% 
+  kable(booktabs = T,centering = T,align = "l")
+```
