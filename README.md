@@ -1,7 +1,16 @@
 NACC data Analysis
 ================
 Xinyue Chen
-2022-12-02
+2022-12-05
+
+Please change to a work directory you want to run this project.
+
+The image can be built by running the command below:
+
+``` terminal
+
+make cxy26/final
+```
 
 Link to the image on Dockerhub:
 
